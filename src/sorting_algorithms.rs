@@ -142,18 +142,15 @@ pub mod quick_sort {
 pub mod merge_sort {
     use std::cmp::Ord;
 
-    /// This implementation of merge sort requires has:
-    /// * Running time: `O(n log n)`
-    /// * Space required: `O(n)`
+    /// This implementation of merge sort is recursive. The sequence is split in half and the function is called recursively
+    /// on both halves. Then the two sorted halves are merged into a longer sorted sequence.
+    /// The running time is O(n log n) because every element is part of O(log n) sequences
+    /// and the algorithm iterates on every element of every sequence once.
     ///
-    /// The running time is explained as follows: on each recursion the sequence
-    /// is split in half. The recursion is then applied to that half again.
-    /// Once the sequence is one or zero elements long, it is sorted.
-    /// Now two sequences are merged together, forming a longer sorted sequence (merging is `O(n)`).
-    /// Now, the length of the sorted sequence is double the old one. This goes on for further.
-    /// After each pass the number of sequences halves. Thus the `sort` function recursion
-    /// reaches a maximum depth of `log2(n)`. Thus `n` elements are merged `log(n)` times.
-    /// The runtime is then O(n log n)
+    /// Thus it performs `n * O(log n)` comparisons
+    /// and thus its running time is `O(n log n)`.
+    ///
+    /// It allocates a temp vector of space `O(n)`.
     pub fn merge_sort<I: Ord + Copy + Default + std::fmt::Debug>(sequence: &mut [I]) {
         if sequence.len() < 2 {
             // already sorted

@@ -137,6 +137,119 @@ pub mod heap_sort {
 
 pub mod quick_sort {
     use std::cmp::Ord;
+
+    /// Naive pivot selection (the middle one). Better methods exist to reduce
+    /// the chance of choosing pivots that lead to a worst-case scenario.
+    fn select_pivot<I: Ord + Copy>(sequence: &[I]) -> usize {
+        sequence.len() / 2
+    }
+
+    /// Recursive quick sort.
+    /// Average time required is `O(n log n)` and worst case is `O(n^2)`.
+    pub fn quick_sort<I: Ord + Copy + std::fmt::Debug>(sequence: &mut [I]) {
+        // If len is 0 or 1 then it's already sorted
+        if sequence.len() > 1 {
+            // skip if a 2-sequence is already sorted
+            if sequence.len() == 2 && sequence[0] <= sequence[1] {
+                return;
+            }
+
+            let pivot = select_pivot(sequence);
+
+            let second = separate(sequence, sequence[pivot]);
+
+            quick_sort(&mut sequence[..second]);
+            quick_sort(&mut sequence[second..]);
+        }
+    }
+
+    /// splits the sequence in two halves based on the pivot value. Then returns the starting index of the second
+    /// half of the list.
+    fn separate<I: Ord + Copy + std::fmt::Debug>(sequence: &mut [I], pivot_val: I) -> usize {
+        let (mut s, mut e) = (0, sequence.len() - 1);
+
+        while s < e {
+            let s_val = sequence[s];
+            let e_val = sequence[e];
+
+            if s_val >= pivot_val {
+                if e_val <= pivot_val {
+                    sequence.swap(e, s);
+                    s = s + 1;
+                }
+                e = e - 1;
+            } else {
+                // swap needed
+                if e_val >= pivot_val {
+                    e = e - 1;
+                }
+
+                s = s + 1;
+            }
+        }
+
+        let idx = s.max(e);
+
+        if sequence[idx] <= pivot_val {
+            idx + 1
+        } else {
+            idx
+        }
+    }
+
+    #[cfg(test)]
+    mod tests {
+        #[test]
+        fn simple() {
+            let mut seq = [9, 8, 4, 5, 5, 6];
+            let expected = [4, 5, 5, 6, 8, 9];
+
+            super::quick_sort(&mut seq);
+
+            assert_eq!(&expected, &seq);
+        }
+
+        #[test]
+        fn filled() {
+            let mut seq = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5];
+            let expected = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5];
+
+            super::quick_sort(&mut seq);
+
+            assert_eq!(&expected, &seq);
+        }
+
+        #[test]
+        fn edge_case() {
+            let mut seq: [i64; 0] = [];
+            let expected: [i64; 0] = [];
+
+            super::quick_sort(&mut seq);
+
+            assert_eq!(&expected, &seq);
+
+            let mut seq = [1];
+            let expected = [1];
+
+            super::quick_sort(&mut seq);
+
+            assert_eq!(&expected, &seq);
+
+            let mut seq = [1, 2];
+            let expected = [1, 2];
+
+            super::quick_sort(&mut seq);
+
+            assert_eq!(&expected, &seq);
+
+            let mut seq = [2, 1];
+            let expected = [1, 2];
+
+            super::quick_sort(&mut seq);
+
+            assert_eq!(&expected, &seq);
+        }
+    }
 }
 
 pub mod merge_sort {
@@ -166,8 +279,6 @@ pub mod merge_sort {
         if seq.len() < 2 {
             return;
         }
-
-        println!("Sort {}", seq.len());
 
         // split in two
         let second = seq.len() / 2;

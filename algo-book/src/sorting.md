@@ -69,8 +69,4 @@ Procedure:
 4. Repair the heap (_the element that was inserted in the back isn't part of the heap anymore!_).
 5. Go to step _2_.
 
-Build a max heap:
-
-0. Definitions: the children of element `i` are at `2*i + 1` and `2*1 + 2`. The parent of the
-   element at index `i` is at index `floor((i - 1) / 2)`.
-1. `start = ` index of of the
+For steps _1_ and _4_ see [Datastructures](./datastructures.md)

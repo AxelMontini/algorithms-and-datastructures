@@ -19,6 +19,7 @@ jobs:
     - name: Install mdbook
       run: cargo install mdbook
     - name: Build book
+      working-directory: ./algo-book
       run: mdbook build
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3

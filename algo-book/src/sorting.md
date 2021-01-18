@@ -81,3 +81,37 @@ This sort is a divide-and-conquer approach. It uses extra memory.
 
 It consists in sorting a subarray, then merging two sorted subarrays. This way it obtains
 a longer sorted subarray. It keeps merging until the final array is obtained.
+
+The algorithm is composed of two procedures:
+
+Let `A` be the array to be sorted and `B` be the auxiliary array (same size as `A`).
+
+Merge (given two subarrays at idx `a` to `b - 1` and from `b` to `end`):
+
+0. Initialize `k = a`, `i = a`, `j = b`.
+1. If `k >= end` return.
+2. If `i < b` and (`A[i] <= A[j]` or `j >= end`), then assign `B[k] = A[i]` and increment `i`.
+3. Else, assign `B[k] = A[j]` and increment `j`.
+4. Go to step _1_.
+
+In short, this procedure compares the elements (starting from the begining) of the two subarrays and inserts
+the minimum in `B`. If `j >= end` or `i >= b`, then one of the two subarrays has "run out of elements", thus
+the remaining elements are inserted last.
+
+Now the rest of the procedure:
+
+Merge Sort an array `A`:
+
+0. Initialize `B` with the same length as `A`.
+1. Initialize `width = 1`.
+2. Initialize `i = 0`.
+3. Merge the subarrays `i` to `i + width - 1` and `i + width` to `i + 2 * width`. All of these indices are rounded
+down to fit the length of the array.
+4. Set `i = i + 2 * width`. If `i` is a valid index for the array, go to step _3_.
+5. Set `width = 2 * width`. If `width` is less than the length of the array, go to step _2_.
+
+This is a bottom-up solution: it starts merging subarrays of single elements to form sorted subarrays of two elements.
+Then it merges these 2-length subarrays into 4 element-long subarrays.
+
+At every iteration it has to process $n$ elements and it does so $\O(\log n)$ times.
+Thus the running time of $\O(n \log n)$.

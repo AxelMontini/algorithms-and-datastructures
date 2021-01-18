@@ -4,8 +4,8 @@
 
 ### Bubble Sort
 
-|             | Best   | Average  | Worst    |
-| ----------- | ------ | -------- | -------- |
+|             | Best    | Average   | Worst     |
+| ----------- | ------- | --------- | --------- |
 | Time        | $\O(n)$ | $\O(n^2)$ | $\O(n^2)$ |
 | Space (aux) | $\O(1)$ | $\O(1)$   | $\O(1)$   |
 
@@ -22,8 +22,8 @@ value was swapped in the last run). However, the average and worst case remains 
 
 ### Selection Sort
 
-|             | Best     | Average  | Worst    |
-| ----------- | -------- | -------- | -------- |
+|             | Best      | Average   | Worst     |
+| ----------- | --------- | --------- | --------- |
 | Comparisons | $\O(n^2)$ | $\O(n^2)$ | $\O(n^2)$ |
 | Swaps       | $\O(1)$   | $\O(n)$   | $\O(n)$   |
 | Space (aux) | $\O(1)$   | $\O(1)$   | $\O(1)$   |
@@ -37,8 +37,8 @@ Procedure:
 
 ### Insertion Sort
 
-|             | Best   | Average  | Worst    |
-| ----------- | ------ | -------- | -------- |
+|             | Best    | Average   | Worst     |
+| ----------- | ------- | --------- | --------- |
 | Comparisons | $\O(n)$ | $\O(n^2)$ | $\O(n^2)$ |
 | Swaps       | $\O(1)$ | $\O(n^2)$ | $\O(n^2)$ |
 | Space (aux) | $\O(1)$ | $\O(1)$   | $\O(1)$   |
@@ -55,11 +55,10 @@ Note that step 2 can be made faster by using _binary search_.
 
 This sort makes use of a max-heap to sort the values.
 
-|             | Best   | Average  | Worst    |
-| ----------- | ------ | -------- | -------- |
-| Comparisons | $\O(n)$ | $\O(n^2)$ | $\O(n^2)$ |
-| Swaps       | $\O(1)$ | $\O(n^2)$ | $\O(n^2)$ |
-| Space (aux) | $\O(1)$ | $\O(1)$   | $\O(1)$   |
+|             | Best           | Average        | Worst          |
+| ----------- | -------------- | -------------- | -------------- |
+| Time        | $\O(n \log n)$ | $\O(n \log n)$ | $\O(n \log n)$ |
+| Space (aux) | $\O(1)$        | $\O(1)$        | $\O(1)$        |
 
 Procedure:
 
@@ -70,3 +69,15 @@ Procedure:
 5. Go to step _2_.
 
 For steps _1_ and _4_ see [Datastructures](./datastructures.md)
+
+### Merge Sort
+
+This sort is a divide-and-conquer approach. It uses extra memory.
+
+|             | Best           | Average        | Worst          |
+| ----------- | -------------- | -------------- | -------------- |
+| Time        | $\O(n \log n)$ | $\O(n \log n)$ | $\O(n \log n)$ |
+| Space (aux) | $\O(n)$        | $\O(n)$        | $\O(n)$        |
+
+It consists in sorting a subarray, then merging two sorted subarrays. This way it obtains
+a longer sorted subarray. It keeps merging until the final array is obtained.

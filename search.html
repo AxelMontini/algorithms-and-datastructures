@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - My Summary of Algorithms and Datastructures at ETHZ</title>
+        <title>Search Algorithms - My Summary of Algorithms and Datastructures at ETHZ</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="datastructures.html"><strong aria-hidden="true">2.</strong> Datastructures</a></li><li class="chapter-item expanded "><a href="types-of-algos.html"><strong aria-hidden="true">3.</strong> Types of algorithms</a></li><li class="chapter-item expanded "><a href="search.html"><strong aria-hidden="true">4.</strong> Search Algorithms</a></li><li class="chapter-item expanded "><a href="sorting.html"><strong aria-hidden="true">5.</strong> Sorting</a></li><li class="chapter-item expanded "><a href="graphs.html"><strong aria-hidden="true">6.</strong> Graphs</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="datastructures.html"><strong aria-hidden="true">2.</strong> Datastructures</a></li><li class="chapter-item expanded "><a href="types-of-algos.html"><strong aria-hidden="true">3.</strong> Types of algorithms</a></li><li class="chapter-item expanded "><a href="search.html" class="active"><strong aria-hidden="true">4.</strong> Search Algorithms</a></li><li class="chapter-item expanded "><a href="sorting.html"><strong aria-hidden="true">5.</strong> Sorting</a></li><li class="chapter-item expanded "><a href="graphs.html"><strong aria-hidden="true">6.</strong> Graphs</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -164,35 +164,55 @@
                 <div id="content" class="content">
                     <main>
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
-<h1><a class="header" href="#introduction" id="introduction">Introduction</a></h1>
-<p>This tiny book serves as a summary of most of the stuff that I've studied during
-the course &quot;<em>Algorithmen und Datenstrukturen</em>&quot; at ETHZ.</p>
-<p>The course is in German but the exam is in English: this often leads to confusion, as everything that gets
-taught during the lectures has to be translated in English by the students themselves.</p>
-<p>While it might be an easy task for a native german speaker, I can assure you that it gets harder for
-students that don't speak the language every day.</p>
-<p>The whole lesson would be:</p>
-<ol>
-<li>Hear the professor teaching about something in German</li>
-<li>Look up the word / term / ... on the internet and look for a translation in English.</li>
-<li>Rethink about what has been said in English, so you won't get completely
-destroyed by terms you don't know in the exam.</li>
+<h1><a class="header" href="#search-algorithms" id="search-algorithms">Search Algorithms</a></h1>
+<p>There are various ways to search a data structure. Here we analyze
+ways to search an array. The fastest method depends on the properties
+of said array.</p>
+<h2><a class="header" href="#linear-search" id="linear-search">Linear Search</a></h2>
+<p>Time: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">O</span></span></span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></p>
+<p>The simplest method. Simply iterate through the array and compare
+every element with the one you're looking for.</p>
+<p>For example, let's say that we want to find out <code>k</code>'s index in the array <code>A</code>.
+If <code>k</code> is not in the array, we should get <code>-1</code> as a result. The following
+procedure does exactly that:</p>
+<ol start="0">
+<li>Initialize i = 0</li>
+<li>If <code>A</code>'s length is less or equal <code>i</code>, return <code>-1</code>.</li>
+<li>If <code>A[i] == k</code>, return <code>i</code>.</li>
+<li>Increment <code>i</code></li>
+<li>Go to step <em>1</em>.</li>
 </ol>
-<p>No cheatsheet is allowed there, thus remembering every definition, every technical term, how every datastructure or
-algorithm works is a hard task.</p>
-<p>Having a small book that contains all information needed in a readable way is a great way to prepare yourself for
-that very tragic day. Repetition is the key, the more the better.</p>
-<p>Note that this isn't meant as your only source of information during your studies: I might make mistakes while writing this
-and I'm pretty sure that I'm not the best teacher there is. <a href="https://www.youtube.com/channel/UCZCFT11CWBi3MHNlGf019nw">I'm not Abdul :(</a></p>
+<h2><a class="header" href="#binary-search" id="binary-search">Binary Search</a></h2>
+<p>Time: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">O</span></span></span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></p>
+<p>Sometimes we need to search a value in a sorted array, meaning that
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∀</span><span class="mord mathnormal">i</span><span class="mord">∀</span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mspace"> </span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">⇒</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">A</span><span class="mopen">[</span><span class="mord mathnormal">i</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">A</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mclose">]</span><span class="mclose">)</span></span></span></span></span></p>
+<p>An array could also be sorted in descending order. The same search method can
+be easily adapted for such case.</p>
+<p>The procedure to search for <code>k</code> in said array <code>A</code> is the following:</p>
+<ol start="0">
+<li>Initialize <code>l = 0</code> and <code>r = A.length - 1</code>.</li>
+<li>Set <code>mid = (l + r) / 2</code>.</li>
+<li>If <code>mid</code> is not a valid index for <code>A</code>, return <code>-1</code> (not found).</li>
+<li>Compare <code>k</code> with <code>A[mid]</code>.</li>
+<li>If <code>k</code> is greater, then set <code>l = mid + 1</code>.</li>
+<li>If <code>k</code> is smaller, then set <code>r = mid - 1</code>.</li>
+<li>Else, we've found <code>k</code>. Return <code>mid</code>.</li>
+</ol>
+<p>At every step, half of the remaining items are excluded from the search: thus the
+logaritmic time.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
+                            <a rel="prev" href="types-of-algos.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
 
                         
-                            <a rel="next" href="datastructures.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="sorting.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -204,9 +224,13 @@ and I'm pretty sure that I'm not the best teacher there is. <a href="https://www
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
+                    <a rel="prev" href="types-of-algos.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
 
                 
-                    <a rel="next" href="datastructures.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="sorting.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

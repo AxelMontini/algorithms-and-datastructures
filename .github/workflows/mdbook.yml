@@ -17,7 +17,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install mdbook
-      run: cargo install mdbook
+      working-directory: ./algo-book
+      run: sh install-mdbook.sh
     - name: Build book
       working-directory: ./algo-book
       run: mdbook build

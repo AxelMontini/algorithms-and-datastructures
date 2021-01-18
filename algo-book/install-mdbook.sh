@@ -1,3 +1,3 @@
 #!/bin/sh
 
-cargo install mdbook mdbook-katex
+cargo install --force mdbook mdbook-katex

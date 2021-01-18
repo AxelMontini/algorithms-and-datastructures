@@ -16,7 +16,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install mdbook
+    - name: Get mdbook versions
+      id: get-ver
+      run: |
+        echo "::set-output name=ver::$(cargo search --limit 1 mdbook | awk -F\" '{print $2}')-$(cargo search --limit 1 mdbook-katex | awk -F\" '{print $2}')"
+      shell: bash
+    - name: Cache mdbook and katex # cache key contains latest mdbook and mdbook-katex versions. Needs recompilation if changed
+      id: cache-mdbook
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cargo/bin/mdbook
+          ~/.cargo/bin/mdbook-katex
+        key: ${{ runner.os }}-mdbook-${{ steps.get-ver.outputs.ver }}
+    - name: Install mdbook # Run install only if cache missed
+      if: steps.cache-mdbook.outputs.cache-hit != 'true'
       working-directory: ./algo-book
       run: sh install-mdbook.sh
     - name: Build book

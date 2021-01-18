@@ -115,3 +115,5 @@ Then it merges these 2-length subarrays into 4 element-long subarrays.
 
 At every iteration it has to process $n$ elements and it does so $\O(\log n)$ times.
 Thus the running time of $\O(n \log n)$.
+
+### QuickSort

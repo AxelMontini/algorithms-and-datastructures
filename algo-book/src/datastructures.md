@@ -35,6 +35,8 @@ Search for a key `k`:
 4. Else, if the current node is less than `k`, set its right child as current node. Then go to step 2.
 5. Else, it means that the current node is equal to `k`. The node has been found, return.
 
+### AVL Tree
+
 ### Min / Max heap
 
 A _min_ / _max_ heap os a type of _binary tree_ where a _condition_ must hold:
@@ -95,3 +97,11 @@ Why time $\O(n)$? Well, the number of operations of sift down depends on how clo
 Since we start at the bottom, the sift down operation on the leaves runs no operations.
 Thus the total number of calls of "sift down" is gonna be
 $$ 0\frac{n}{2} + 1\frac{n}{4} + 2\frac{n}{8} + 3\frac{n}{16} + ... = n \underset{i = 2}{\overset{\infty}{\sum}} (i - 1)\frac{1}{2^i} \le n \underset{i = 1}{\overset{\infty}{\sum}} \frac{1}{2^i} \le \mathcal{O}(n) $$
+
+### Linked List
+
+### Stack
+
+### Queue
+
+### Priority Queue

@@ -12,15 +12,17 @@ pub mod heap {
         }
 
         pub fn extract(&mut self) -> Option<V> {
-            // replace first with last
-            let greatest = self.seq.swap_remove(0);
+            if self.seq.len() == 0 {
+                None
+            } else {
+                // replace first with last
+                let greatest = self.seq.swap_remove(0);
 
-            //TODO: Handle empty heap case and such
+                // Fix heap
+                sift_down(&mut self.seq, |a, b| a.cmp(b), 0);
 
-            // Fix heap
-            sift_down(&mut self.seq, |a, b| a.cmp(b), 0);
-
-            Some(greatest)
+                Some(greatest)
+            }
         }
     }
 
@@ -35,15 +37,17 @@ pub mod heap {
         }
 
         pub fn extract(&mut self) -> Option<V> {
-            // replace first with last
-            let smallest = self.seq.swap_remove(0);
+            if self.seq.len() == 0 {
+                None
+            } else {
+                // replace first with last
+                let smallest = self.seq.swap_remove(0);
 
-            //TODO: Handle empty heap case and such
+                // Fix heap
+                sift_down(&mut self.seq, |a, b| b.cmp(a), 0);
 
-            // Fix heap
-            sift_down(&mut self.seq, |a, b| b.cmp(a), 0);
-
-            Some(smallest)
+                Some(smallest)
+            }
         }
     }
 
@@ -104,16 +108,20 @@ pub mod heap {
             let mut min_heap = MinHeap::new(seq);
 
             for &el in &[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] {
-                assert_eq!(el, min_heap.extract());
+                assert_eq!(Some(el), min_heap.extract());
             }
+
+            assert_eq!(None, min_heap.extract());
 
             let seq = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
             let mut min_heap = MaxHeap::new(seq);
 
             for &el in &[9, 8, 7, 6, 5, 4, 3, 2, 1, 0] {
-                assert_eq!(el, min_heap.extract());
+                assert_eq!(Some(el), min_heap.extract());
             }
+
+            assert_eq!(None, min_heap.extract());
         }
     }
 }

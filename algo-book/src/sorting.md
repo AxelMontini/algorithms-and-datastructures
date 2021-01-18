@@ -6,8 +6,8 @@
 
 |             | Best   | Average  | Worst    |
 | ----------- | ------ | -------- | -------- |
-| Time        | `O(n)` | `O(n^2)` | `O(n^2)` |
-| Space (aux) | `O(1)` | `O(1)`   | `O(1)`   |
+| Time        | $\O(n)$ | $\O(n^2)$ | $\O(n^2)$ |
+| Space (aux) | $\O(1)$ | $\O(1)$   | $\O(1)$   |
 
 Procedure:
 
@@ -24,9 +24,9 @@ value was swapped in the last run). However, the average and worst case remains 
 
 |             | Best     | Average  | Worst    |
 | ----------- | -------- | -------- | -------- |
-| Comparisons | `O(n^2)` | `O(n^2)` | `O(n^2)` |
-| Swaps       | `O(1)`   | `O(n)`   | `O(n)`   |
-| Space (aux) | `O(1)`   | `O(1)`   | `O(1)`   |
+| Comparisons | $\O(n^2)$ | $\O(n^2)$ | $\O(n^2)$ |
+| Swaps       | $\O(1)$   | $\O(n)$   | $\O(n)$   |
+| Space (aux) | $\O(1)$   | $\O(1)$   | $\O(1)$   |
 
 Procedure:
 
@@ -39,9 +39,9 @@ Procedure:
 
 |             | Best   | Average  | Worst    |
 | ----------- | ------ | -------- | -------- |
-| Comparisons | `O(n)` | `O(n^2)` | `O(n^2)` |
-| Swaps       | `O(1)` | `O(n^2)` | `O(n^2)` |
-| Space (aux) | `O(1)` | `O(1)`   | `O(1)`   |
+| Comparisons | $\O(n)$ | $\O(n^2)$ | $\O(n^2)$ |
+| Swaps       | $\O(1)$ | $\O(n^2)$ | $\O(n^2)$ |
+| Space (aux) | $\O(1)$ | $\O(1)$   | $\O(1)$   |
 
 Procedure:
 
@@ -57,9 +57,9 @@ This sort makes use of a max-heap to sort the values.
 
 |             | Best   | Average  | Worst    |
 | ----------- | ------ | -------- | -------- |
-| Comparisons | `O(n)` | `O(n^2)` | `O(n^2)` |
-| Swaps       | `O(1)` | `O(n^2)` | `O(n^2)` |
-| Space (aux) | `O(1)` | `O(1)`   | `O(1)`   |
+| Comparisons | $\O(n)$ | $\O(n^2)$ | $\O(n^2)$ |
+| Swaps       | $\O(1)$ | $\O(n^2)$ | $\O(n^2)$ |
+| Space (aux) | $\O(1)$ | $\O(1)$   | $\O(1)$   |
 
 Procedure:
 

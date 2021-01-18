@@ -5,5 +5,5 @@ multilingual = false
 src = "src"
 title = "My Summary of Algorithms and Datastructures at ETHZ"
 
-[output.html]
-mathjax-support = true
+[preprocessor.katex]
+macros = "src/macros.txt"

@@ -11,14 +11,16 @@ pub mod heap {
             Self { seq }
         }
 
-        pub fn extract(&mut self) -> V {
+        pub fn extract(&mut self) -> Option<V> {
             // replace first with last
             let greatest = self.seq.swap_remove(0);
+
+            //TODO: Handle empty heap case and such
 
             // Fix heap
             sift_down(&mut self.seq, |a, b| a.cmp(b), 0);
 
-            greatest
+            Some(greatest)
         }
     }
 
@@ -32,14 +34,16 @@ pub mod heap {
             Self { seq }
         }
 
-        pub fn extract(&mut self) -> V {
+        pub fn extract(&mut self) -> Option<V> {
             // replace first with last
             let smallest = self.seq.swap_remove(0);
+
+            //TODO: Handle empty heap case and such
 
             // Fix heap
             sift_down(&mut self.seq, |a, b| b.cmp(a), 0);
 
-            smallest
+            Some(smallest)
         }
     }
 

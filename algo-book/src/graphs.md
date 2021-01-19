@@ -22,9 +22,11 @@ Some useful terminology:
 
 ## BFS
 
-## Bellman-Ford algorithm
+## Shortest path from source
 
-## Dijkstra's algorithm
+### Bellman-Ford algorithm
+
+### Dijkstra's algorithm
 
 Runtime with binary heap: $\O((\left|V\right| + \left|E\right|) \log \left|V\right|)$
 
@@ -47,6 +49,56 @@ Given a graph $G$ and a source $s$, the procedure is the following:
    2. else if `distance[v] > distance[u] + w(u, v)`, change `v`'s parent to `u` and set its
       new distance. Then change `v`'s key in the queue to its new distance.
 7. Go to step _4_
+
+## Shortest Paths between all pairs
+
+### Floyd-Warshall algorithm
+
+Time: $\Theta(|V|^3)$
+
+Space: $\Theta(|V|^2)$
+
+This algorithm uses dynamic programming to compute the shortest path between pairs.
+
+It does not work with negative cycles, altough it can detect them easily.
+
+Let's represent the data in a matrix `D`, where every row and column correspond to a vertex
+$v_1, v_2, ..., v_n$. The base case is, given a row $i$ and a column $j$:
+$$
+\begin{cases}
+   D_{i,j} = 0 & \text{if } i = j \\
+   D_{i, j} = w(v_i, v_j) & \text{if } \exists (v_i, v_j) \in E \\
+   D_{i,j} = \infty & \text{otherwise }
+\end{cases}
+$$
+
+In plain text, the base case is:
+- $0$ if on the diagonal ($i = j$)
+- $w(v_i, v_j)$ if there's an edge $(v_i, v_j)$
+- $\infty$ otherwise
+
+The next step is to iterate a total of $|V|^3$ times, with the following recursive case,
+$$ sp(i, j, k) = \min(sp(i, j, k-1), sp(i, k, k - 1) + sp(k, j, k - 1)) $$
+where $sp(i, j, k)$ is the shortest path between vertices $i$ and $j$ and "middle vertex" $k$.
+
+The full procedure is:
+
+0. Initialize the $|V| \times |V|$ table `D`, filled with $\infty$
+1. For each edge `(u, v)`, set `D[u][v] = w(u, v)`
+2. For each vertex `v` set `D[v][v] = 0`
+3. For `k` in $1$ to $|V|$:
+   1. For `i` in $1$ to $|V|$
+      1. For `j` in $1$ to $|V|$
+         1. If `D[i][j] <= D[i][k] + D[k][j]`, do nothing.
+         2. Otherwise, set the new shortest path `D[i][j] = D[i][k] + D[k][j]`.
+
+After the execution, `D` will contain the shortest path between every pair of vertices, _unless_
+there's a negative cycle in the graph. In that case there's gonna be negative values along the
+diagonal, where only zeros are to be expected. If there's negative values along the diagonal, then
+there's a negative cycle and the result is incorrect.
+
+### Johnson's algorithm
+
 
 ## Minumum Spanning Tree
 
@@ -93,7 +145,3 @@ Procedure:
    2. Otherwise, add the edge `(u, v)` in the MST and perform an union operation on `u`'s and `v`'s sets.
 
 Note: to prove the running time, $|E| \le |V|^2 \Rightarrow \O(\log |E|) \le \O(\log |V|)$
-
-## Floyd-Warshall algorithm
-
-## Johnson's algorithm

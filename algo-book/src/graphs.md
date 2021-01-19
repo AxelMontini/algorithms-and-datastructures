@@ -18,9 +18,19 @@ Some useful terminology:
 - _Trail_:
 - _Path_:
 
-## DFS
+## DFS: Depth-First Search
 
-## BFS
+The idea is to discover the graph by starting at a vertex `s` and then traversing the children
+depth-first.
+
+A recursive procedure for DFS starting at vertex `s` could be this:
+
+1. label `s` as discovered
+2. For all edges `(s, v)` do:
+   1. If vertex `v` is not discovered, run DFS with `v` as source.
+
+
+## BFS: Breadth-First Search
 
 ## Shortest path from source
 
@@ -64,6 +74,7 @@ It does not work with negative cycles, altough it can detect them easily.
 
 Let's represent the data in a matrix `D`, where every row and column correspond to a vertex
 $v_1, v_2, ..., v_n$. The base case is, given a row $i$ and a column $j$:
+
 $$
 \begin{cases}
    D_{i,j} = 0 & \text{if } i = j \\
@@ -73,6 +84,7 @@ $$
 $$
 
 In plain text, the base case is:
+
 - $0$ if on the diagonal ($i = j$)
 - $w(v_i, v_j)$ if there's an edge $(v_i, v_j)$
 - $\infty$ otherwise
@@ -99,6 +111,34 @@ there's a negative cycle and the result is incorrect.
 
 ### Johnson's algorithm
 
+Time (worst case): $\O(|V|^2 \log |V| + |V| |E|)$
+
+This algorithm uses both the Bellman-Ford and Dijkstra's algorithms to
+find the shortest path between every pair of vertices.
+
+It works by adding a vertex $q$ into the graph, connected to every vertex by a _0-weight edge_.
+
+Then the Bellman-Ford algorithm is executed (starting from $q$) to find for each vertex the minimum
+weight $h(v)$ of a path from $q$ to $v$. If this step detects a negative cycle, the algorithm stops.
+
+It then reweights the edges of the original graph: the edge $(u, v)$ is given the new length
+$w(u, v) + h(u) - h(v)$
+
+Finally, $q$ is removed and Dijkstra's algorithm is ran on each node $s$ to find the shortest path
+between it and the other nodes. After this, $h(v) - h(u)$ is re-added to Dijkstra's result to
+obtain the shortest path on the original graph.
+
+Procedure:
+
+1. Add a vertex `q` to the graph and add a 0-weight edge `(q, v)` for every `v`.
+2. Run the Bellman-Ford algorithm from `q` to find the minimum weight `h(v)` of a path
+   from `q` to `v`.
+3. Change the weight of every edge, by setting it to `w(u, v) + h(u) - h(v)`
+4. Remove `q` from the graph
+5. Run Dijkstra on every vertex `s` to obtain the shortest path between every `s` and the
+   other vertices. We now have the distances `D(u, v)`.
+6. Add `h(v) - h(u)` to every distance `D(u, v)` to obtain the length of the shortest path
+   between every pair of vertices.
 
 ## Minumum Spanning Tree
 
@@ -124,8 +164,6 @@ Time (binary heap): $\O((|V| + |E|) \log |V|) \le \O(|E| \log |V|)$
 Prim' algorithm requires a starting vertex `s`.
 
 Procedure:
-
-
 
 ### Kruskal's algorithm
 

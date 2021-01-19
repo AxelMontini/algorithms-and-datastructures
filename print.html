@@ -448,6 +448,8 @@ new distance. Then change <code>v</code>'s key in the queue to its new distance.
 <h2><a class="header" href="#minumum-spanning-tree" id="minumum-spanning-tree">Minumum Spanning Tree</a></h2>
 <h3><a class="header" href="#boruvkas-algorithm" id="boruvkas-algorithm">Boruvka's algorithm</a></h3>
 <p>Time: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">O</span></span></span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></p>
+<p>The idea is to first divide the graph in one-vertex components. Then the cheapest edge connecting every
+component to another component is found and added to the MST. The components are then joined.</p>
 <p>Procedure:</p>
 <ol start="0">
 <li>Initialize <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span></span></span></span> components, each one containing one vertex. Also initialize a list that will contain the edges of the MST.</li>
@@ -462,7 +464,9 @@ this edge to the MST and connect the two components.</li>
 <p>Procedure:</p>
 <h3><a class="header" href="#kruskals-algorithm" id="kruskals-algorithm">Kruskal's algorithm</a></h3>
 <p>Time: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">O</span></span></span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></p>
-<p>This algorithm requires a <em>disjoin-set</em> data structure.</p>
+<p>This algorithm requires a <em>disjoin-set</em> data structure.
+It is similar to Boruvka's, but it differs in the fact that instead of looking for the cheapest edge of <em>every</em> component,
+it looks for the cheapest edge that connects <em>any</em> two components.</p>
 <p>Procedure:</p>
 <ol start="0">
 <li>Intialize a list for the edges of the MST.</li>

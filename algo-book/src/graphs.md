@@ -54,6 +54,9 @@ Given a graph $G$ and a source $s$, the procedure is the following:
 
 Time: $\O(|E| \log |V|)$
 
+The idea is to first divide the graph in one-vertex components. Then the cheapest edge connecting every
+component to another component is found and added to the MST. The components are then joined.
+
 Procedure:
 
 0. Initialize $|V|$ components, each one containing one vertex. Also initialize a list that will contain the edges of the MST.
@@ -77,6 +80,8 @@ Procedure:
 Time: $\O(|E| \log |V|)$
 
 This algorithm requires a _disjoin-set_ data structure.
+It is similar to Boruvka's, but it differs in the fact that instead of looking for the cheapest edge of _every_ component,
+it looks for the cheapest edge that connects _any_ two components.
 
 Procedure:
 

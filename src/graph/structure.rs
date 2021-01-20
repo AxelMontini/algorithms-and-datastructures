@@ -196,14 +196,9 @@ impl<'a> WeightedAdjacencyStructure<'a, Directed> for WeightedAdjacencyList<Dire
 
     fn insert_edge(&mut self, v1: usize, v2: usize, weight: usize) -> bool {
         let res = self.list.insert_edge(v1, v2);
+
         if res {
-            let pos = self
-                .list
-                .adjacency_iter(v1)
-                .unwrap()
-                .position(|v| v == v2)
-                .unwrap();
-            self.weights[v1][pos] = weight;
+            self.weights[v1].push(weight);
         }
 
         res
@@ -212,7 +207,7 @@ impl<'a> WeightedAdjacencyStructure<'a, Directed> for WeightedAdjacencyList<Dire
     fn remove_edge(&mut self, v1: usize, v2: usize) -> bool {
         if self.contains_vertex(v1) {
             let pos = self.adjacency_iter(v1).unwrap().position(|v| v == v2);
-            
+
             if let Some(pos) = pos {
                 self.weights[v1].swap_remove(pos);
             }
@@ -232,7 +227,12 @@ impl<'a> WeightedAdjacencyStructure<'a, Directed> for WeightedAdjacencyList<Dire
 
             self.weights.pop();
 
-           // TODO: IMPL
+            for (list, weights) in self.list.vertices_list.iter().zip(self.weights.iter_mut()) {
+                let pos = list.iter().position(|&v| v == v_rem);
+                if let Some(pos) = pos {
+                    weights.remove(pos);
+                }
+            }
         }
 
         self.list.remove_vertex()
@@ -280,6 +280,9 @@ mod tests {
         for _ in 0..10 {
             list.insert_vertex();
         }
+
+        // insert edge to same vertex should fail
+        assert!(!list.insert_edge(0, 0));
 
         assert!(list.insert_edge(0, 1));
         assert!(!list.insert_edge(0, 1));

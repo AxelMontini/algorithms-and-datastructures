@@ -1,6 +1,6 @@
 pub mod datastructures;
+pub mod graph;
 pub mod s3;
 pub mod s4;
 pub mod s6;
 pub mod sorting_algorithms;
-pub mod graph;

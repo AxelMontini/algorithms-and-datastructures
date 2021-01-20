@@ -1,6 +1,35 @@
+use std::ops::{Deref, DerefMut};
+
 pub struct Graph<D: Direction, A: AdjacencyStructure<D>> {
     adjacency_structure: A,
     _phantom: std::marker::PhantomData<D>,
+}
+
+impl<D: Direction, A: AdjacencyStructure<D> + Default> Graph<D, A> {
+    pub fn new() -> Self {
+        Self::with_adjacency_structure(Default::default())
+    }
+
+    pub fn with_adjacency_structure(adjacency_structure: A) -> Self {
+        Self {
+            adjacency_structure,
+            _phantom: Default::default(),
+        }
+    }
+}
+
+impl<D: Direction, A: AdjacencyStructure<D>> Deref for Graph<D, A> {
+    type Target = A;
+
+    fn deref(&self) -> &Self::Target {
+        &self.adjacency_structure
+    }
+}
+
+impl<D: Direction, A: AdjacencyStructure<D>> DerefMut for Graph<D, A> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.adjacency_structure
+    }
 }
 
 pub struct Directed;
@@ -11,7 +40,7 @@ pub trait Direction {}
 impl Direction for Directed {}
 impl Direction for Undirected {}
 
-pub trait AdjacencyStructure<D: Direction> {
+pub trait AdjacencyStructure<D: Direction>: Default {
     /// Returns `true` whether it contains the edge `(v1, v2)`.
     fn contains_edge(&self, v1: usize, v2: usize) -> bool;
     fn insert_edge(&mut self, v1: usize, v2: usize) -> bool;
@@ -20,8 +49,8 @@ pub trait AdjacencyStructure<D: Direction> {
     fn insert_vertex(&mut self) -> usize;
     /// Removes the last vertex of this structure. The id is returned.
     fn remove_vertex(&mut self) -> Option<usize>;
-    // /// Returns an iterator over the adjacent vertices
-    //TODO: GATs // fn iter_adjacent(&self) -> impl Iterator<usize>;
+    /// Returns true whether it contains `vertex`
+    fn contains_vertex(&self, vertex: usize) -> bool;
 }
 
 pub struct AdjacencyList<D: Direction> {
@@ -29,12 +58,18 @@ pub struct AdjacencyList<D: Direction> {
     _phantom: std::marker::PhantomData<D>,
 }
 
-impl<D: Direction> AdjacencyList<D> {
-    pub fn new() -> Self {
+impl<D: Direction> Default for AdjacencyList<D> {
+    fn default() -> Self {
         Self {
             vertices_list: Default::default(),
             _phantom: Default::default(),
         }
+    }
+}
+
+impl<D: Direction> AdjacencyList<D> {
+    pub fn new() -> Self {
+        Self::default()
     }
 }
 
@@ -98,13 +133,27 @@ impl AdjacencyStructure<Directed> for AdjacencyList<Directed> {
             None
         }
     }
+
+    fn contains_vertex(&self, vertex: usize) -> bool {
+        self.vertices_list.get(vertex).is_some()
+    }
 }
 
 pub struct AdjacencyMatrix {}
 
 #[cfg(test)]
 mod tests {
-    use super::{AdjacencyList, AdjacencyStructure, Directed};
+    use super::{AdjacencyList, AdjacencyStructure, Directed, Graph};
+
+    #[test]
+    fn graph() {
+        let list = AdjacencyList::<Directed>::new();
+        let mut graph = Graph::with_adjacency_structure(list);
+
+        graph.insert_vertex();
+
+        assert!(graph.contains_vertex(0));
+    }
 
     #[test]
     fn adjacency_list_directed() {
@@ -153,7 +202,7 @@ mod tests {
         list.remove_vertex();
 
         for i in 0..9 {
-            assert!(!list.contains_edge(0, 9));
+            assert!(!list.contains_edge(i, 9));
         }
     }
 }

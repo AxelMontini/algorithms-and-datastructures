@@ -129,5 +129,31 @@ mod tests {
         assert!(list.remove_edge(0, 2));
         assert!(!list.remove_edge(0, 2));
         assert!(!list.contains_edge(0, 2));
+
+        let mut list = AdjacencyList::<Directed>::new();
+
+        for _ in 0..10 {
+            list.insert_vertex();
+        }
+        // Connect the last vertex and the first to every other vertex
+        for i in 1..9 {
+            list.insert_edge(0, i);
+            list.insert_edge(i, 9);
+        }
+
+        for i in 1..9 {
+            assert!(list.contains_edge(0, i));
+            assert!(list.contains_edge(i, 9));
+        }
+
+        list.insert_edge(0, 9);
+        assert!(list.contains_edge(0, 9));
+
+        // remove 9. now check whether all related edges got removed too.
+        list.remove_vertex();
+
+        for i in 0..9 {
+            assert!(!list.contains_edge(0, 9));
+        }
     }
 }

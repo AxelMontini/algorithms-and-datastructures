@@ -191,7 +191,35 @@ less or equal the one of <code>p</code>.</li>
 <li>Else, if the current node is less than <code>k</code>, set its right child as current node. Then go to step 2.</li>
 <li>Else, it means that the current node is equal to <code>k</code>. The node has been found, return.</li>
 </ol>
+<p>Insertion of a node <code>n</code> is pretty simple:</p>
+<ol start="0">
+<li>Start at the root. If there's no root, set <code>n</code> as root.</li>
+<li>Look at the current node.</li>
+<li>If <code>n</code> is less or equal than the current node, set the left child as current node and go to step <em>1</em>, unless
+there's no right child: in that case, set <code>n</code> as left child.</li>
+<li>Else, set the right child as current node and go to step <em>1</em>,
+unless ... (analogous to step <em>2</em> ).</li>
+</ol>
+<p>This way the node is inserted in the right place.</p>
+<p>Deletion is a bit trickier, as one has to account for deletion of nodes that have children.</p>
+<p>Procedure Delete node <code>n</code>:</p>
+<ol>
+<li>If <code>n</code> has no children, simple remove <code>n</code> from the tree.</li>
+<li>Else if it has only one child, remove <code>n</code> and put its only child at in its place.</li>
+<li>Else, do the following: find either the smallest node greater than <code>n</code> or the greatest node smaller than <code>n</code>
+by going left once and then right until not possible anymore or right once and left until possible. The last node we
+find can be moved in <code>n</code>'s place. If this node has a child, put the child in the node's place.</li>
+</ol>
 <h3><a class="header" href="#avl-tree" id="avl-tree">AVL Tree</a></h3>
+<p>BSTs have a fundamental problem: after adding a lot of nodes one by one, we might end up in a situation where
+the height of the tree is <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">O</span></span></span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> (try doing so for the sequence <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">n</span></span></span></span> or in reverse).</p>
+<p>AVL trees are created exactly to solve this problem.</p>
+<p>Every AVL Tree is also a binary search tree, but not the opposite.</p>
+<p>In addition to the BST condition (left &lt;= parent &lt;= right), it also has to be <em>balanced</em>.
+What does this mean?</p>
+<p>Every node has a balance coefficient, which is the height of the left substre minus the height of
+the right one, which is <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">h</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">h</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mclose">)</span></span></span></span></p>
+<p>If <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">−</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mclose">}</span></span></span></span>, then that node is <em>balanced</em>. Otherwise it's <em>unbalanced</em>. </p>
 <h3><a class="header" href="#min--max-heap" id="min--max-heap">Min / Max heap</a></h3>
 <p>A <em>min</em> / <em>max</em> heap os a type of <em>binary tree</em> where a <em>condition</em> must hold:
 In a <em>min</em> / <em>max</em> heap, every parent is <em>smaller</em> / <em>greater</em> than all of its children.</p>

@@ -192,6 +192,13 @@ depth-first.</p>
 </ol>
 </li>
 </ol>
+<p>When using DFS it's possible to compute and store the <em>pre</em> and <em>post</em> values
+for each node, defined as follows:</p>
+<ul>
+<li>Pre: time at which the node is first discovered.</li>
+<li>Post: time at which the recursion on this node terminates.</li>
+</ul>
+<p>A node <code>B</code> can be reached from <code>A</code> if <code>pre(B) &gt; pre(A)</code> and <code>post(B) &lt; post(A)</code></p>
 <h2><a class="header" href="#bfs-breadth-first-search" id="bfs-breadth-first-search">BFS: Breadth-First Search</a></h2>
 <h2><a class="header" href="#shortest-path-from-source" id="shortest-path-from-source">Shortest path from source</a></h2>
 <h3><a class="header" href="#bellman-ford-algorithm" id="bellman-ford-algorithm">Bellman-Ford algorithm</a></h3>

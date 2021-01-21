@@ -29,6 +29,15 @@ A recursive procedure for DFS starting at vertex `s` could be this:
 2. For all edges `(s, v)` do:
    1. If vertex `v` is not discovered, run DFS with `v` as source.
 
+When using DFS it's possible to compute and store the _pre_ and _post_ values
+for each node, defined as follows:
+
+* Pre: time at which the node is first discovered.
+* Post: time at which the recursion on this node terminates.
+
+A node `B` can be reached from `A` if `pre(B) > pre(A)` and `post(B) < post(A)`
+
+
 
 ## BFS: Breadth-First Search
 

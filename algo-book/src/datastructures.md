@@ -53,9 +53,25 @@ Procedure Delete node `n`:
 1. If `n` has no children, simple remove `n` from the tree.
 2. Else if it has only one child, remove `n` and put its only child at in its place.
 3. Else, do the following: find either the smallest node greater than `n` or the greatest node smaller than `n`
-_without children_ (usually a leaf), remove it and put it in `n`'s place (deleting `n`).
+by going left once and then right until not possible anymore or right once and left until possible. The last node we
+find can be moved in `n`'s place. If this node has a child, put the child in the node's place.
 
 ### AVL Tree
+
+BSTs have a fundamental problem: after adding a lot of nodes one by one, we might end up in a situation where
+the height of the tree is $\O(n)$ (try doing so for the sequence $1, 2, 3, ..., n$ or in reverse).
+
+AVL trees are created exactly to solve this problem.
+
+Every AVL Tree is also a binary search tree, but not the opposite.
+
+In addition to the BST condition (left <= parent <= right), it also has to be _balanced_.
+What does this mean?
+
+Every node has a balance coefficient, which is the height of the left substre minus the height of
+the right one, which is $bf = h(l) - h(r)$
+
+If $bf \in \{-1, 0, 1\}$, then that node is _balanced_. Otherwise it's _unbalanced_. 
 
 ### Min / Max heap
 

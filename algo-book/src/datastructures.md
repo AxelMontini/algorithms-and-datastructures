@@ -35,6 +35,26 @@ Search for a key `k`:
 4. Else, if the current node is less than `k`, set its right child as current node. Then go to step 2.
 5. Else, it means that the current node is equal to `k`. The node has been found, return.
 
+Insertion of a node `n` is pretty simple:
+
+0. Start at the root. If there's no root, set `n` as root.
+1. Look at the current node.
+2. If `n` is less or equal than the current node, set the left child as current node and go to step _1_, unless
+there's no right child: in that case, set `n` as left child.
+3. Else, set the right child as current node and go to step _1_,
+unless ... (analogous to step _2_ ).
+
+This way the node is inserted in the right place.
+
+Deletion is a bit trickier, as one has to account for deletion of nodes that have children.
+
+Procedure Delete node `n`:
+
+1. If `n` has no children, simple remove `n` from the tree.
+2. Else if it has only one child, remove `n` and put its only child at in its place.
+3. Else, do the following: find either the smallest node greater than `n` or the greatest node smaller than `n`
+_without children_ (usually a leaf), remove it and put it in `n`'s place (deleting `n`).
+
 ### AVL Tree
 
 ### Min / Max heap

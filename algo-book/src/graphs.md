@@ -32,12 +32,10 @@ A recursive procedure for DFS starting at vertex `s` could be this:
 When using DFS it's possible to compute and store the _pre_ and _post_ values
 for each node, defined as follows:
 
-* Pre: time at which the node is first discovered.
-* Post: time at which the recursion on this node terminates.
+- Pre: time at which the node is first discovered.
+- Post: time at which the recursion on this node terminates.
 
 A node `B` can be reached from `A` if `pre(B) > pre(A)` and `post(B) < post(A)`
-
-
 
 ## BFS: Breadth-First Search
 
@@ -64,9 +62,8 @@ Given a graph $G$ and a source $s$, the procedure is the following:
 4. if the queue is empty, return.
 5. extract the min value `u` from the queue.
 6. For every edge `(u, v)`, do the following:
-   1. if `v` has no parent, set `u` as its parent and set `distance[v] = distance[u] + w(u, v)`
-   2. else if `distance[v] > distance[u] + w(u, v)`, change `v`'s parent to `u` and set its
-      new distance. Then change `v`'s key in the queue to its new distance.
+   1. if `distance[v] > distance[u] + w(u, v)`, change `v`'s parent to `u` and set its
+      new distance. Then add `v` in the queue with its new distance as key.
 7. Go to step _4_
 
 ## Shortest Paths between all pairs

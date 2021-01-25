@@ -1,6 +1,6 @@
 use core::slice;
 use std::{
-    iter::Copied,
+    iter::{Copied, Zip},
     ops::{Deref, DerefMut},
 };
 
@@ -59,14 +59,17 @@ pub trait AdjacencyStructure<'a, D: Direction>: Default {
     fn contains_vertex(&self, vertex: usize) -> bool;
     ///
     fn adjacency_iter(&'a self, vertex: usize) -> Option<Self::AdjIter>;
+
+    fn count_vertices(&self) -> usize;
+    fn count_edges(&self) -> usize;
 }
 
-pub trait WeightedAdjacencyStructure<'a, D: Direction> {
-    type AdjIter: Iterator<Item = usize> + 'a;
+pub trait WeightedAdjacencyStructure<'a, D: Direction, W: 'a> {
+    type AdjIter: Iterator<Item = (usize, &'a W)> + 'a;
 
     /// Returns `true` whether it contains the edge `(v1, v2)`.
     fn contains_edge(&self, v1: usize, v2: usize) -> bool;
-    fn insert_edge(&mut self, v1: usize, v2: usize, weight: usize) -> bool;
+    fn insert_edge(&mut self, v1: usize, v2: usize, weight: W) -> bool;
     fn remove_edge(&mut self, v1: usize, v2: usize) -> bool;
     /// Inserts a new vertex in the structure. The id is chosen automatically and returned.
     fn insert_vertex(&mut self) -> usize;
@@ -77,7 +80,10 @@ pub trait WeightedAdjacencyStructure<'a, D: Direction> {
     ///
     fn adjacency_iter(&'a self, vertex: usize) -> Option<Self::AdjIter>;
 
-    fn get_weight(&self, v1: usize, v2: usize) -> Option<usize>;
+    fn get_weight(&self, v1: usize, v2: usize) -> Option<&W>;
+
+    fn count_vertices(&self) -> usize;
+    fn count_edges(&self) -> usize;
 }
 
 pub struct AdjacencyList<D: Direction> {
@@ -170,15 +176,23 @@ impl<'a> AdjacencyStructure<'a, Directed> for AdjacencyList<Directed> {
     fn adjacency_iter(&'a self, vertex: usize) -> Option<Self::AdjIter> {
         self.vertices_list.get(vertex).map(|l| l.iter().copied())
     }
+
+    fn count_vertices(&self) -> usize {
+        self.vertices_list.len()
+    }
+
+    fn count_edges(&self) -> usize {
+        self.vertices_list.iter().map(|l| l.len()).sum()
+    }
 }
 
-pub struct WeightedAdjacencyList<D: Direction> {
+pub struct WeightedAdjacencyList<D: Direction, W> {
     list: AdjacencyList<D>,
     /// same layout as list: weights[i][j] = weight of list[i][j]
-    weights: Vec<Vec<usize>>,
+    weights: Vec<Vec<W>>,
 }
 
-impl<D: Direction> Default for WeightedAdjacencyList<D> {
+impl<D: Direction, W> Default for WeightedAdjacencyList<D, W> {
     fn default() -> Self {
         Self {
             list: Default::default(),
@@ -187,14 +201,14 @@ impl<D: Direction> Default for WeightedAdjacencyList<D> {
     }
 }
 
-impl<'a> WeightedAdjacencyStructure<'a, Directed> for WeightedAdjacencyList<Directed> {
-    type AdjIter = <AdjacencyList<Directed> as AdjacencyStructure<'a, Directed>>::AdjIter;
+impl<'a, W: 'a> WeightedAdjacencyStructure<'a, Directed, W> for WeightedAdjacencyList<Directed, W> {
+    type AdjIter = Zip<Copied<slice::Iter<'a, usize>>, slice::Iter<'a, W>>;
 
     fn contains_edge(&self, v1: usize, v2: usize) -> bool {
         self.list.contains_edge(v1, v2)
     }
 
-    fn insert_edge(&mut self, v1: usize, v2: usize, weight: usize) -> bool {
+    fn insert_edge(&mut self, v1: usize, v2: usize, weight: W) -> bool {
         let res = self.list.insert_edge(v1, v2);
 
         if res {
@@ -206,7 +220,7 @@ impl<'a> WeightedAdjacencyStructure<'a, Directed> for WeightedAdjacencyList<Dire
 
     fn remove_edge(&mut self, v1: usize, v2: usize) -> bool {
         if self.contains_vertex(v1) {
-            let pos = self.adjacency_iter(v1).unwrap().position(|v| v == v2);
+            let pos = self.adjacency_iter(v1).unwrap().position(|(v, _)| v == v2);
 
             if let Some(pos) = pos {
                 self.weights[v1].swap_remove(pos);
@@ -243,14 +257,24 @@ impl<'a> WeightedAdjacencyStructure<'a, Directed> for WeightedAdjacencyList<Dire
     }
 
     fn adjacency_iter(&'a self, vertex: usize) -> Option<Self::AdjIter> {
-        self.list.adjacency_iter(vertex)
+        self.list
+            .adjacency_iter(vertex)
+            .map(|iter| iter.zip(self.weights[vertex].iter()))
     }
 
-    fn get_weight(&self, v1: usize, v2: usize) -> Option<usize> {
+    fn get_weight(&self, v1: usize, v2: usize) -> Option<&W> {
         let mut iter = self.list.adjacency_iter(v1)?;
         let pos = iter.position(|a| a == v2)?;
 
-        Some(self.weights[v1][pos])
+        Some(&self.weights[v1][pos])
+    }
+
+    fn count_vertices(&self) -> usize {
+        self.list.count_vertices()
+    }
+
+    fn count_edges(&self) -> usize {
+        self.list.count_edges()
     }
 }
 
@@ -329,7 +353,7 @@ mod tests {
 
     #[test]
     fn weighted_adjacency_list() {
-        let mut list = WeightedAdjacencyList::<Directed>::default();
+        let mut list = WeightedAdjacencyList::<Directed, i32>::default();
 
         list.insert_vertex();
         list.insert_vertex();
@@ -338,11 +362,11 @@ mod tests {
 
         list.insert_edge(0, 1, 4);
 
-        assert_eq!(Some(4), list.get_weight(0, 1));
+        assert_eq!(Some(&4), list.get_weight(0, 1));
 
         let mut iter = list.adjacency_iter(0).unwrap();
 
-        assert_eq!(Some(1), iter.next());
+        assert_eq!(Some((1, &4)), iter.next());
         assert_eq!(None, iter.next());
     }
 }

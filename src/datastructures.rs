@@ -1,7 +1,9 @@
 pub mod heap {
     use std::cmp::Ordering;
 
-    struct MaxHeap<V: Ord> {
+    use crate::graph::structure::Graph;
+
+    pub struct MaxHeap<V: Ord> {
         seq: Vec<V>,
     }
 
@@ -26,7 +28,7 @@ pub mod heap {
         }
     }
 
-    struct MinHeap<V: Ord> {
+    pub struct MinHeap<V: Ord> {
         seq: Vec<V>,
     }
 
@@ -49,6 +51,16 @@ pub mod heap {
                 Some(smallest)
             }
         }
+
+        pub fn peek(&self) -> Option<&V> {
+            self.seq.get(0)
+        }
+
+        pub fn insert(&mut self, value: V) {
+            self.seq.push(value);
+            let start = self.seq.len() - 1;
+            sift_up(&mut self.seq, |a, b| b.cmp(a), start);
+        }
     }
 
     pub fn heapify_min<V: Ord>(seq: &mut [V]) {
@@ -63,6 +75,22 @@ pub mod heap {
     pub fn heapify<V: Ord>(seq: &mut [V], cmp: impl Fn(&V, &V) -> Ordering) {
         for idx in (0..seq.len()).rev() {
             sift_down(seq, &cmp, idx);
+        }
+    }
+
+    /// Perform a sift up operation from given start index. Used in `insert`
+    pub fn sift_up<V: Ord>(seq: &mut [V], cmp: impl Fn(&V, &V) -> Ordering, start: usize) {
+        let mut cursor = start;
+
+        while cursor > 0 {
+            let parent = (cursor - 1) / 2;
+
+            if cmp(&seq[cursor], &seq[parent]) == Ordering::Greater {
+                seq.swap(cursor, parent);
+                cursor = parent;
+            } else {
+                break;
+            }
         }
     }
 
@@ -122,6 +150,19 @@ pub mod heap {
             }
 
             assert_eq!(None, min_heap.extract());
+
+            // test insertion
+
+            let mut min_heap = MinHeap::new(vec![]);
+
+            for i in (0..10).rev() {
+                min_heap.insert(i);
+                assert_eq!(Some(i), min_heap.peek().copied());
+            }
+
+            for i in 0..10 {
+                assert_eq!(Some(i), min_heap.extract());
+            }
         }
     }
 }

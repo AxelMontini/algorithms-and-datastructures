@@ -18,6 +18,11 @@ Some useful terminology:
 - _Trail_:
 - _Path_:
 
+## Topological Ordering
+
+A topological ordering is a sequence of vertices, in which
+for every edge $(u, v)$ the vertex $u$ comes before $v$.
+
 ## DFS: Depth-First Search
 
 The idea is to discover the graph by starting at a vertex `s` and then traversing the children
@@ -42,6 +47,25 @@ A node `B` can be reached from `A` if `pre(B) > pre(A)` and `post(B) < post(A)`
 ## Shortest path from source
 
 ### Bellman-Ford algorithm
+
+Time: $\O(|V| \cdot |E|)$
+
+An algorithm used to find the shortest path between a source vertex and all other vertices.
+
+The Bellman-Ford algorithm can be used on graphs with negative edge weights, but
+not on graps with negative cycles.
+
+The procedure is the following:
+
+0. Initialize two arrays, to contain the prececessors and distances: the first one full of null values,
+   the second one with $\infty$.
+1. Set `destination[source] = 0`
+2. Now, for $|V| - 1$ times:
+   1. For each edge `(u,v)` with weight `w`, if `d[v] > d[v] + w` update `v`'s distance
+      and set `u` as its predecessor.
+3. Check if for any edge `(u, v)` with weight `w`, the following is true:
+   `distance[u] + w < distance[v]`. In this case, the graph contains a negative cycle, thus
+   the algorithm should procude an error, as the computed distances aren't correct.
 
 ### Dijkstra's algorithm
 
@@ -167,9 +191,23 @@ Procedure:
 
 Time (binary heap): $\O((|V| + |E|) \log |V|) \le \O(|E| \log |V|)$
 
-Prim' algorithm requires a starting vertex `s`.
+The idea is to store the processed vertices in a component.
+On each step, the cheapest edge that connects any vertex in the component with
+another not in the component is chosen and added to the MST, while the vertex becomes
+part of the component.
 
 Procedure:
+
+1. Initialize an array `C` where `C[v] = +inf` and an array `E` filled with nulls.
+2. Initialize an empty forest (it will contain the MST) and a set `Q` of all vertices.
+3. Repeat until `Q` is empty:
+   1. Remove a vertex `v` from `Q` having the lowerst `C[v]`.
+   2. Add `v` to the forest and, if `E[v]` is not null, add it too.
+   3. For every edge `(v, w)`:
+      1. If `w` belongs to `Q` and `w(v, w) < C[w]`, go on. Otherwise, go to the
+         next edge.
+      2. Set `C[w] = w(v, w)`
+      3. Set `E[w] = (v, w)`
 
 ### Kruskal's algorithm
 
